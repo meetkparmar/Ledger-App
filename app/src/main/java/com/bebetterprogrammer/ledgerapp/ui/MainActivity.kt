@@ -15,6 +15,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bebetterprogrammer.ledgerapp.R
 import com.bebetterprogrammer.ledgerapp.viewmodel.TransactionViewModel
 import com.firebase.ui.auth.AuthUI
@@ -29,11 +31,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setupViewModelAndListener()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             openAddTaskActivity()
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -42,9 +45,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home,
-            R.id.nav_gallery,
-            R.id.nav_slideshow
+            R.id.nav_home
         ), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -54,11 +55,25 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.nav_logout -> {
                     AuthUI.getInstance().signOut(this)
-                    true
+                    val b = true
                 }
             }
             false
         }
+    }
+
+    private fun setupViewModelAndListener() {
+        viewModel = ViewModelProviders.of(this).get(TransactionViewModel::class.java)
+        viewModel.authenticationState.observe(this, Observer {
+            if (it == null) {
+                openLoginActivity()
+            }
+        })
+    }
+
+    private fun openLoginActivity() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     private fun openAddTaskActivity() {

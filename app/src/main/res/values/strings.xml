@@ -13,4 +13,11 @@
 
     <string name="home_second">Home Second</string>
     <string name="create_task">Create a Task</string>
+
+    <string name="name">Name</string>
+    <string name="task">Task</string>
+    <string name="amount">Amount</string>
+    <string name="done">Done</string>
+    <string name="empty_transaction_list">There is No Transaction Found</string>
+    <string name="date">Date</string>
 </resources>
