@@ -18,7 +18,11 @@ A simple Ledger App
 
 **ScreenShots of App:**
 <p>
-  <img align="left" src = "image/Login.jpg.jpg" width="300" height="600" >
+  <img align="left" src = "image/Login.jpg" width="300" height="600" >
   <img align="center" src = "image/Add Details.jpg" width="300" height="600" >
   <img align="right" src = "image/Transaction History.jpg" width="300" height="600" >
 </p>
+
+| | | | | |
+|:----:|:----:|:----:|:----:|:----:|
+| <img alt="SS_1" src="image/Login.jpg"> | <img alt="SS_2" src="image/Add Details.jpg"> | <img alt="SS_3" src="image/Transaction History.jpg"> 
