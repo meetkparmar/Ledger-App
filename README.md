@@ -15,3 +15,10 @@ A simple Ledger App
 - MVVM
 - Live data
 - View Model
+
+**ScreenShots of App:**
+<p>
+  <img align="left" src = "images/Login.jpg.jpg" width="300" height="600" >
+  <img align="center" src = "images/Add Details.jpg" width="300" height="600" >
+  <img align="right" src = "images/Transaction History.jpg" width="300" height="600" >
+</p>
