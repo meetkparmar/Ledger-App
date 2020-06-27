@@ -6,7 +6,7 @@
     android:background="@color/colorPrimary">
 
     <Button
-        android:id="@+id/signInButton"
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/white"

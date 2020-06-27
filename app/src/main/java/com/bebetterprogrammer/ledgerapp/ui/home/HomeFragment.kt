@@ -1,31 +1,94 @@
 package com.bebetterprogrammer.ledgerapp.ui.home
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bebetterprogrammer.ledgerapp.R
+import com.bebetterprogrammer.ledgerapp.adapter.TransactionAdapter
+import com.bebetterprogrammer.ledgerapp.database.Transaction
+import com.bebetterprogrammer.ledgerapp.ui.LoginActivity.Companion.TAG
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
+import kotlinx.android.synthetic.main.dialog_box.*
+import kotlinx.android.synthetic.main.dialog_box.view.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    lateinit var currentView: View
+    lateinit var adapter: TransactionAdapter
+    lateinit var database: DatabaseReference
+    val transactionList = mutableListOf<Transaction>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.tv_empty_list)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        database = FirebaseDatabase.getInstance().reference
+        currentView = inflater.inflate(R.layout.fragment_home, container, false)
+        return currentView
     }
+
+    override fun onStart() {
+        super.onStart()
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                transactionList.clear()
+                for (data in dataSnapshot.children) {
+                    val transaction = data.getValue<Transaction>()
+                    transaction?.let { transactionList.add(it) }
+                }
+
+                if (transactionList.isEmpty()){
+                    tv_empty_list.visibility = View.VISIBLE
+                    rv_history.visibility = View.GONE
+                } else {
+                    tv_empty_list.visibility = View.GONE
+                    rv_history.visibility = View.VISIBLE
+                    adapter.data = transactionList
+                    adapter.notifyDataSetChanged()
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initAdapter()
+    }
+
+    private fun initAdapter() {
+        rv_history.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        adapter = TransactionAdapter { position ->
+            onTransactionClicked(position)
+        }
+        rv_history.adapter = adapter
+    }
+
+    private fun onTransactionClicked(position: Int) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.CustomAlertDialog)
+        val viewGroup = currentView.findViewById<ViewGroup>(android.R.id.content)
+        val dialogView: View = LayoutInflater.from(currentView.context).inflate(R.layout.dialog_box, viewGroup, false)
+        builder.setView(dialogView)
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+        dialogView.btn_delete.setOnClickListener {
+            val db = FirebaseDatabase.getInstance().reference.child(transactionList.get(position).transactionID)
+            db.removeValue()
+            alertDialog.dismiss()
+        }
+
+    }
+
 }

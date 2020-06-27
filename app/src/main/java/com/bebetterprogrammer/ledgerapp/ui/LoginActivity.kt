@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupViewAndClickListeners() {
-        signInButton.setOnClickListener {
+        btn_login.setOnClickListener {
             val providers = arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build())
             val intent = AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build()
             startActivityForResult(intent, SIGN_IN_REQUEST_CODE)

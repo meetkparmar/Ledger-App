@@ -5,26 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/default_margin">
 
-    <TextView
-        android:id="@+id/userName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name"
-        android:textSize="@dimen/text_size"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textField"
+        android:id="@+id/name_text_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/task"
+        android:hint="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userName">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/taskDetailsET"
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:singleLine="true"
@@ -34,16 +25,35 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/amountField"
+        android:id="@+id/text_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_text_field">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_details"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:singleLine="true"
+            android:inputType="textCapWords"
+            android:imeOptions="actionDone" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amount_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/amount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textField">
+        app:layout_constraintTop_toBottomOf="@id/text_field">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/amountDetailsET"
+            android:id="@+id/et_amount_details"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:singleLine="true"
@@ -53,7 +63,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/btn_done"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/colorPrimary"
