@@ -1,4 +1,4 @@
-package com.bebetterprogrammer.ledgerapp.ui.home
+package com.bebetterprogrammer.ledgerapp.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -14,7 +14,6 @@ import com.bebetterprogrammer.ledgerapp.database.Transaction
 import com.bebetterprogrammer.ledgerapp.ui.LoginActivity.Companion.TAG
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
-import kotlinx.android.synthetic.main.dialog_box.*
 import kotlinx.android.synthetic.main.dialog_box.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -47,10 +46,10 @@ class HomeFragment : Fragment() {
 
                 if (transactionList.isEmpty()){
                     tv_empty_list.visibility = View.VISIBLE
-                    rv_history.visibility = View.GONE
+                    rv_transaction_history.visibility = View.GONE
                 } else {
                     tv_empty_list.visibility = View.GONE
-                    rv_history.visibility = View.VISIBLE
+                    rv_transaction_history.visibility = View.VISIBLE
                     adapter.data = transactionList
                     adapter.notifyDataSetChanged()
                 }
@@ -68,11 +67,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        rv_history.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        rv_transaction_history.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         adapter = TransactionAdapter { position ->
             onTransactionClicked(position)
         }
-        rv_history.adapter = adapter
+        rv_transaction_history.adapter = adapter
     }
 
     private fun onTransactionClicked(position: Int) {
@@ -81,7 +80,6 @@ class HomeFragment : Fragment() {
         val dialogView: View = LayoutInflater.from(currentView.context).inflate(R.layout.dialog_box, viewGroup, false)
         builder.setView(dialogView)
         val alertDialog: AlertDialog = builder.create()
-        alertDialog.setCancelable(false)
         alertDialog.show()
         dialogView.btn_delete.setOnClickListener {
             val db = FirebaseDatabase.getInstance().reference.child(transactionList.get(position).transactionID)
