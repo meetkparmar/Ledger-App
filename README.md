@@ -17,6 +17,6 @@ A simple Ledger App
 - View Model
 
 **ScreenShots of App:**
-| | | | |
+| | | | | |
 |:----:|:----:|:----:|
 | <img alt="SS_1" src="image/Login.jpg"> | <img alt="SS_2" src="image/Add Details.jpg"> | <img alt="SS_3" src="image/Transaction History.jpg"> |
