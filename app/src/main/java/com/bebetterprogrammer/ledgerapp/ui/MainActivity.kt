@@ -21,6 +21,7 @@ import com.bebetterprogrammer.ledgerapp.R
 import com.bebetterprogrammer.ledgerapp.viewmodel.TransactionViewModel
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 
 class MainActivity : AppCompatActivity() {
@@ -84,6 +85,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupUserInDrawer(navHeaderView: View) {
         FirebaseAuth.getInstance().currentUser?.let { user ->
+            user.photoUrl?.let {
+                Picasso.get().load(it).placeholder(R.mipmap.ic_launcher_round)
+                    .error(R.mipmap.ic_launcher_round).into(navHeaderView.userImageView)
+            }
+
             user.displayName?.let {
                 navHeaderView.userName.text = it
             }

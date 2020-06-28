@@ -15,10 +15,14 @@
     <string name="create_task">Create a Task</string>
 
     <string name="name">Name</string>
-    <string name="details">Details</string>
+    <string name="details">Transaction Details</string>
     <string name="amount">Amount</string>
     <string name="done">Done</string>
-    <string name="empty_transaction_list">There is No Transaction Found</string>
+    <string name="empty_transaction_list">No transaction found!!</string>
     <string name="date">Date</string>
     <string name="delete">Delete</string>
+    <string name="status">status</string>
+    <string name="pending">PENDING</string>
+    <string name="approve">Approve</string>
+    <string name="reject">Reject</string>
 </resources>

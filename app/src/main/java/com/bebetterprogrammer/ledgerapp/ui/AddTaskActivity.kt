@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bebetterprogrammer.ledgerapp.R
 import com.bebetterprogrammer.ledgerapp.database.Transaction
+import com.bebetterprogrammer.ledgerapp.utils.Status
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
@@ -23,6 +24,7 @@ class AddTaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activty_add_task)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         database = FirebaseDatabase.getInstance().reference
         etName = findViewById(R.id.et_name)
@@ -34,11 +36,9 @@ class AddTaskActivity : AppCompatActivity() {
             addDetails()
             finish()
         }
-
     }
 
     private fun addDetails() {
-
         val name = etName.text.toString()
         val details = etDetails.text.toString()
         val amount = etAmount.text.toString()
@@ -52,11 +52,16 @@ class AddTaskActivity : AppCompatActivity() {
             date = sdf.format(calender.time)
 
             val id = database.push().key
-            val transaction = Transaction(id!!, name, details, amount, date)
+            val transaction = Transaction(id!!, name, details, amount, date, Status.PENDING)
             database.child(id).setValue(transaction)
 
             Toast.makeText(this, "Transaction added", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
 }

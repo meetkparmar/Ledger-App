@@ -12,6 +12,7 @@ import com.bebetterprogrammer.ledgerapp.R
 import com.bebetterprogrammer.ledgerapp.adapter.TransactionAdapter
 import com.bebetterprogrammer.ledgerapp.database.Transaction
 import com.bebetterprogrammer.ledgerapp.ui.LoginActivity.Companion.TAG
+import com.bebetterprogrammer.ledgerapp.utils.Status
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.dialog_box.view.*
@@ -23,6 +24,7 @@ class HomeFragment : Fragment() {
     lateinit var adapter: TransactionAdapter
     lateinit var database: DatabaseReference
     val transactionList = mutableListOf<Transaction>()
+    var valueListner: ValueEventListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +38,7 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        database.addValueEventListener(object : ValueEventListener {
+        valueListner = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 transactionList.clear()
                 for (data in dataSnapshot.children) {
@@ -58,7 +60,18 @@ class HomeFragment : Fragment() {
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
-        })
+        }
+
+        valueListner?.let {
+            database.addValueEventListener(it)
+        }
+    }
+
+    override fun onStop() {
+        valueListner?.let {
+            database.removeEventListener(it)
+        }
+        super.onStop()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,13 +96,29 @@ class HomeFragment : Fragment() {
         builder.setView(dialogView)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.show()
-        dialogView.btn_delete.setOnClickListener {
-            val db =
-                FirebaseDatabase.getInstance().reference.child(transactionList.get(position).transactionID)
-            db.removeValue()
+
+        dialogView.btn_approve.setOnClickListener {
+            val db = FirebaseDatabase.getInstance().reference.child(transactionList.get(position).transactionID)
+
+            val map = mutableMapOf<String, Any>()
+            map["status"] = Status.APPROVED
+            db.updateChildren(map)
             alertDialog.dismiss()
         }
 
-    }
+        dialogView.btn_reject.setOnClickListener {
+            val db = FirebaseDatabase.getInstance().reference.child(transactionList.get(position).transactionID)
 
+            val map = mutableMapOf<String, Any>()
+            map["status"] = Status.REJECTED
+            db.updateChildren(map)
+            alertDialog.dismiss()
+        }
+
+        dialogView.btn_delete.setOnClickListener {
+            val db = FirebaseDatabase.getInstance().reference.child(transactionList.get(position).transactionID)
+            db.removeValue()
+            alertDialog.dismiss()
+        }
+    }
 }

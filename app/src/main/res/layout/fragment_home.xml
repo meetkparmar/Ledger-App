@@ -13,6 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:textColor="@color/black"
         android:text="@string/empty_transaction_list"
         android:textAlignment="center"
         android:textSize="@dimen/text_size"
