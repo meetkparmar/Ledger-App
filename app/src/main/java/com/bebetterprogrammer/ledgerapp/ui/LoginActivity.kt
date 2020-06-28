@@ -22,7 +22,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         FirebaseAuth.getInstance().currentUser?.let {
-            Log.i(TAG, "User is already logged in with name - ${FirebaseAuth.getInstance().currentUser?.displayName}!")
+            Log.i(
+                TAG,
+                "User is already logged in with name - ${FirebaseAuth.getInstance().currentUser?.displayName}!"
+            )
             openMainActivity()
         }
 
@@ -41,7 +44,9 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewAndClickListeners() {
         btn_login.setOnClickListener {
             val providers = arrayListOf(AuthUI.IdpConfig.GoogleBuilder().build())
-            val intent = AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build()
+            val intent =
+                AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers)
+                    .build()
             startActivityForResult(intent, SIGN_IN_REQUEST_CODE)
         }
     }
@@ -51,7 +56,10 @@ class LoginActivity : AppCompatActivity() {
         if (requestCode == SIGN_IN_REQUEST_CODE) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                Log.i(TAG, "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!")
+                Log.i(
+                    TAG,
+                    "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}!"
+                )
                 openMainActivity()
             } else {
                 Log.i(TAG, "Sign in unsuccessful ${response?.error?.errorCode}")

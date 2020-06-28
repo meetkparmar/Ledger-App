@@ -25,9 +25,9 @@ class HomeFragment : Fragment() {
     val transactionList = mutableListOf<Transaction>()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         database = FirebaseDatabase.getInstance().reference
         currentView = inflater.inflate(R.layout.fragment_home, container, false)
@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
                     transaction?.let { transactionList.add(it) }
                 }
 
-                if (transactionList.isEmpty()){
+                if (transactionList.isEmpty()) {
                     tv_empty_list.visibility = View.VISIBLE
                     rv_transaction_history.visibility = View.GONE
                 } else {
@@ -67,7 +67,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        rv_transaction_history.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        rv_transaction_history.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         adapter = TransactionAdapter { position ->
             onTransactionClicked(position)
         }
@@ -77,12 +78,14 @@ class HomeFragment : Fragment() {
     private fun onTransactionClicked(position: Int) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.CustomAlertDialog)
         val viewGroup = currentView.findViewById<ViewGroup>(android.R.id.content)
-        val dialogView: View = LayoutInflater.from(currentView.context).inflate(R.layout.dialog_box, viewGroup, false)
+        val dialogView: View =
+            LayoutInflater.from(currentView.context).inflate(R.layout.dialog_box, viewGroup, false)
         builder.setView(dialogView)
         val alertDialog: AlertDialog = builder.create()
         alertDialog.show()
         dialogView.btn_delete.setOnClickListener {
-            val db = FirebaseDatabase.getInstance().reference.child(transactionList.get(position).transactionID)
+            val db =
+                FirebaseDatabase.getInstance().reference.child(transactionList.get(position).transactionID)
             db.removeValue()
             alertDialog.dismiss()
         }

@@ -13,7 +13,7 @@ class TransactionViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     private val name = view.findViewById<TextView>(R.id.tv_name)
     private val details = view.findViewById<TextView>(R.id.tv_details)
     private val amount = view.findViewById<TextView>(R.id.tv_amount)
-    private val date= view.findViewById<TextView>(R.id.tv_date)
+    private val date = view.findViewById<TextView>(R.id.tv_date)
 
     private var transaction: Transaction? = null
 
