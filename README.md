@@ -2,7 +2,7 @@
 
 A sample application for book-keeping. Users can add transactions/entries to central database and other person can approve or reject those transaction.
 
-**Features:** 
+### Features
 - Login with a Google account.
 - Add transaction with name of the person, transaction details and amount.
 - Delete functionality also available to remove any ledger details.
